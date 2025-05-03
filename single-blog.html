@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how to effectively use React Hooks to simplify your components and manage state without classes">
+    <meta property="og:title" content="Mastering React Hooks: A Comprehensive Guide | Rasib Iftekhar">
+    <meta property="og:description" content="A deep dive into React Hooks and how they can transform your React development workflow">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630?text=React+Hooks">
+    <meta property="og:url" content="https://rasib.com.bd/blog/mastering-react-hooks">
+    <title>Mastering React Hooks: A Comprehensive Guide | Rasib Iftekhar</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --bg-color: #efefef;
+            --card-bg: #f8f9fa;
+            --dark-bg: #1a1a2e;
+            --dark-card: #16213e;
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #4fc3f7;
+            --secondary-color: #bb86fc;
+            --text-color: #f8f9fa;
+            --light-text: #f8f9fa;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--bg-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+            margin-left: 20px;
+        }
+
+        /* Blog Post Header */
+        .blog-post-header {
+            padding: 150px 0 40px;
+            text-align: center;
+        }
+
+        .blog-post-header .meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .blog-post-header .meta span {
+            display: flex;
+            align-items: center;
+            margin: 0 15px;
+        }
+
+        .blog-post-header .meta i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        .blog-post-header h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+
+
+        /* Blog Post Content */
+        .blog-post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 450px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-post-content h2 {
+            font-size: 32px;
+            margin: 40px 0 20px;
+            color: var(--primary-color);
+        }
+
+        .blog-post-content h3 {
+            font-size: 26px;
+            margin: 35px 0 15px;
+        }
+
+        .blog-post-content p {
+            margin-bottom: 20px;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .blog-post-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .blog-post-content a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .blog-post-content ul, .blog-post-content ol {
+            margin-bottom: 25px;
+            padding-left: 30px;
+        }
+
+        .blog-post-content li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .blog-post-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 30px 0;
+            background: var(--card-bg);
+            font-style: italic;
+        }
+
+        .blog-post-content code {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--card-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        .blog-post-content pre {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+
+        .blog-post-content pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            color: #f8f8f2;
+        }
+
+        .blog-post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+      
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .footer-content p {
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .blog-post-header h1 {
+                font-size: 36px;
+            }
+            
+            .blog-post-content h2 {
+                font-size: 28px;
+            }
+            
+            .blog-post-content h3 {
+                font-size: 22px;
+            }
+            
+            .featured-image {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: var(--bg-color);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 40px;
+                transition: var(--transition);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .blog-post-header {
+                padding: 130px 0 30px;
+            }
+            
+            .blog-post-header h1 {
+                font-size: 30px;
+            }
+            
+          
+        }
+
+        @media (max-width: 576px) {
+            .blog-post-header h1 {
+                font-size: 26px;
+            }
+            
+            .blog-post-content h2 {
+                font-size: 24px;
+            }
+            
+            .blog-post-content h3 {
+                font-size: 20px;
+            }
+            
+            .featured-image {
+                height: 250px;
+            }
+            
+          
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html#home" class="logo">rasib.com.bd</a>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#services">Skills</a></li>
+                    <li><a href="index.html#resume">Resume</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Blog Post Header -->
+    <section class="blog-post-header">
+        <div class="container">
+           
+            <h1 data-aos="fade-up" data-aos-delay="100">Mastering React Hooks: A Comprehensive Guide</h1>
+            <div class="meta" data-aos="fade-up">
+                <span><i class="far fa-calendar-alt"></i> June 15, 2023</span>
+               
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post-content">
+        <div class="container">
+            <img src="https://via.placeholder.com/1200x600" alt="React Hooks" class="featured-image" data-aos="fade-up">
+
+            <p data-aos="fade-up">React Hooks, introduced in React 16.8, have revolutionized how we write React components. They allow you to use state and other React features without writing classes, leading to cleaner, more reusable code. In this comprehensive guide, we'll explore all the major hooks and how to use them effectively in your applications.</p>
+
+            <h2 data-aos="fade-up">Why React Hooks?</h2>
+            <p data-aos="fade-up">Before hooks, React components could be either functional (stateless) or class-based (stateful). This division often led to:</p>
+            <ul data-aos="fade-up">
+                <li>Complex components that were hard to understand</li>
+                <li>Difficulty reusing stateful logic between components</li>
+                <li>Confusing class syntax (this binding, lifecycle methods)</li>
+            </ul>
+            <p data-aos="fade-up">Hooks solve these problems by letting you use React features in functional components.</p>
+
+            <h2 data-aos="fade-up">The useState Hook</h2>
+            <p data-aos="fade-up">The most basic hook, <code>useState</code>, allows functional components to have local state:</p>
+            
+            <pre data-aos="fade-up"><code class="language-javascript">import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;You clicked {count} times&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Click me
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+            <p data-aos="fade-up">Key points about <code>useState</code>:</p>
+            <ul data-aos="fade-up">
+                <li>Returns a stateful value and a function to update it</li>
+                <li>The initial state is only used on the first render</li>
+                <li>State updates trigger re-renders</li>
+                <li>You can use multiple <code>useState</code> hooks in a single component</li>
+            </ul>
+
+            <h2 data-aos="fade-up">The useEffect Hook</h2>
+            <p data-aos="fade-up"><code>useEffect</code> combines the functionality of <code>componentDidMount</code>, <code>componentDidUpdate</code>, and <code>componentWillUnmount</code>:</p>
+            
+            <pre data-aos="fade-up"><code class="language-javascript">import React, { useState, useEffect } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `You clicked ${count} times`;
+  });
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;You clicked {count} times&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Click me
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+            <h2 data-aos="fade-up">Conclusion</h2>
+            <p data-aos="fade-up">React Hooks have fundamentally changed how we write React components. They provide:</p>
+            <ul data-aos="fade-up">
+                <li>A simpler way to reuse stateful logic</li>
+                <li>More readable and maintainable components</li>
+                <li>Better code organization and separation of concerns</li>
+            </ul>
+            <p data-aos="fade-up">By mastering hooks, you'll be able to write cleaner, more efficient React code that's easier to maintain and share across your application.</p>
+        </div>
+    </article>
+
+   
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 rasib.com.bd - All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="https://github.com/rasib-iftekhar"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/raasib/"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://x.com/rasib76"><i class="fab fa-x"></i></a>
+                    <a href="https://www.instagram.com/rasib_iftekhar/"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/rasib76"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Mobile Navigation
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-links li');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('active');
+            } else {
+                backToTopBtn.classList.remove('active');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Dark/Light Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme) {
+            body.classList.add(currentTheme);
+            if (currentTheme === 'dark-mode') {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.removeItem('theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Syntax Highlighting
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+        });
+    </script>
+</body>
+</html>
