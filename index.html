@@ -568,60 +568,29 @@
         if (skillsSection) observer.observe(skillsSection);
 
         // Form Validation
-        const contactForm = document.getElementById('contactForm');
-        
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                let isValid = true;
-                
-                // Validate Name
-                const name = document.getElementById('name');
-                const nameError = document.getElementById('name-error');
-                if (name.value.trim() === '') {
-                    nameError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    nameError.style.display = 'none';
-                }
-                
-                // Validate Email
-                const email = document.getElementById('email');
-                const emailError = document.getElementById('email-error');
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email.value)) {
-                    emailError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    emailError.style.display = 'none';
-                }
-                
-                // Validate Subject
-                const subject = document.getElementById('subject');
-                const subjectError = document.getElementById('subject-error');
-                if (subject.value.trim() === '') {
-                    subjectError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    subjectError.style.display = 'none';
-                }
-                
-                // Validate Message
-                const message = document.getElementById('message');
-                const messageError = document.getElementById('message-error');
-                if (message.value.trim() === '') {
-                    messageError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    messageError.style.display = 'none';
-                }
-                
-                if (isValid) {
-                    // Here you would typically send the form data to a server
-                    alert('Message sent successfully!');
-                    contactForm.reset();
-                }
-            });
+       const form = document.getElementById("contactForm");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const formData = {
+    name: form.name.value,
+    email: form.email.value,
+    message: form.message.value
+  };
+
+  fetch("PASTE_YOUR_WEB_APP_URL_HERE", {
+    method: "POST",
+    body: JSON.stringify(formData)
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("Message sent successfully!");
+    form.reset();
+  })
+  .catch(err => alert("Error sending message"));
+});
+
         }
 
         // Initialize AOS (Animate On Scroll)
@@ -633,4 +602,5 @@
     </script>
 </body>
 </html>
+
 
