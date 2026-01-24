@@ -2,6 +2,7 @@
 
 A responsive, high-performance personal portfolio website built with vanilla web technologies. This project showcases academic achievements, professional skills, and projects while featuring a serverless contact system integrated with Google Sheets and Gmail.
 
+
 🚀 **Key Features**
 
 Responsive Design: Optimized for mobile, tablet, and desktop viewing.
@@ -14,6 +15,7 @@ Real-time Notifications: Automated email alerts and spreadsheet logging for ever
 
 Blog Integration: Includes dedicated pages for sharing insights and updates.
 
+
 🛠️ **Technology Stack**
 
 Frontend: HTML5, CSS3, JavaScript (ES6+)
@@ -23,19 +25,6 @@ Middleware: Google Apps Script (JavaScript)
 Database/Storage: Google Sheets API
 
 Deployment: Vercel
-
-📂 **Project Structure**
-
-Based on the current repository organization:
-
-├── CV.pdf              # Professional Resume
-├── README.md           # Project Documentation
-├── blog.html           # Main Blog Listing Page
-├── index.html          # Portfolio Homepage
-├── piciiuc.jpg         # Asset: icon Image
-├── piclaldigi.jpg      # Asset: Profile Image
-├── single-blog.html    # Detailed Blog Post Template
-└── style.css           # Global Stylesheet (Custom CSS)
 
 
 ⚙️ **How the Contact Form Works**
@@ -50,14 +39,18 @@ The message is appended as a new row in a private Google Sheet.
 
 An automated email is sent to the developer via Gmail API.
 
+
 🚀 **Deployment**
 
 The site is hosted on Vercel. You can view the live version at: https://www.rasib.com.bd/
+
+
 👨‍💻 **Author**
 
 Mohammad Rasib Iftekhar Nabil
 Student ID: C243116
 International Islamic University Chittagong (IIUC)
+
 
 📄 **License**
 
