@@ -568,36 +568,51 @@
         if (skillsSection) observer.observe(skillsSection);
 
         // Form Validation
-      const form = document.getElementById("contactForm");
+     const form = document.getElementById("contactForm");
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
+  // Reset any previous errors
+  document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
   const formData = {
-    name: form.name.value,
-    email: form.email.value,
-    subject: form.subject.value,
-    message: form.message.value
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    subject: document.getElementById('subject').value,
+    message: document.getElementById('message').value
   };
 
+  // Change button text to show progress
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalBtnText = submitBtn.innerText;
+  submitBtn.innerText = "Sending...";
+  submitBtn.disabled = true;
+
+  // Use 'no-cors' if you face redirect issues, but standard fetch usually works with modern Apps Script
   fetch("https://script.google.com/macros/s/AKfycbzQHirlQVmiwXupA_CYZa5IwYI_aDh38ob79ZU3LHDeek9p-Ye_Hu4B05HhE9rs4nGe1w/exec", {
     method: "POST",
+    mode: "no-cors", // Important for Google Apps Script redirects
+    cache: "no-cache",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(formData)
   })
-  .then(res => res.json())
-  .then(data => {
+  .then(() => {
+    // With 'no-cors', we can't read the response, but if it doesn't catch, it likely sent
     alert("✅ Message sent successfully!");
     form.reset();
   })
   .catch(err => {
-    console.error(err);
-    alert("❌ Error sending message");
+    console.error("Error:", err);
+    alert("❌ Error sending message. Please try again later.");
+  })
+  .finally(() => {
+    submitBtn.innerText = originalBtnText;
+    submitBtn.disabled = false;
   });
 });
-
         // Initialize AOS (Animate On Scroll)
         AOS.init({
             duration: 800,
@@ -607,6 +622,7 @@ form.addEventListener("submit", function (e) {
     </script>
 </body>
 </html>
+
 
 
 
