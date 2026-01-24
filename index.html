@@ -568,7 +568,7 @@
         if (skillsSection) observer.observe(skillsSection);
 
         // Form Validation
-       const form = document.getElementById("contactForm");
+      const form = document.getElementById("contactForm");
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -576,22 +576,27 @@ form.addEventListener("submit", function (e) {
   const formData = {
     name: form.name.value,
     email: form.email.value,
+    subject: form.subject.value,
     message: form.message.value
   };
 
   fetch("https://script.google.com/macros/s/AKfycbzQHirlQVmiwXupA_CYZa5IwYI_aDh38ob79ZU3LHDeek9p-Ye_Hu4B05HhE9rs4nGe1w/exec", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(formData)
   })
   .then(res => res.json())
   .then(data => {
-    alert("Message sent successfully!");
+    alert("✅ Message sent successfully!");
     form.reset();
   })
-  .catch(err => alert("Error sending message"));
+  .catch(err => {
+    console.error(err);
+    alert("❌ Error sending message");
+  });
 });
-
-        }
 
         // Initialize AOS (Animate On Scroll)
         AOS.init({
@@ -602,6 +607,7 @@ form.addEventListener("submit", function (e) {
     </script>
 </body>
 </html>
+
 
 
 
